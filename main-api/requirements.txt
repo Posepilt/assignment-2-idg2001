@@ -1,0 +1,7 @@
+dicttoxml
+fastapi
+httpx
+pandas
+pydantic
+sqlalchemy
+uvicorn

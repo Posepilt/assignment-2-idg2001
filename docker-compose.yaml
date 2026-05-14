@@ -1,0 +1,41 @@
+services:
+  main-api:
+    build: ./main-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - token-shop
+      - rate-limiter
+      - cache
+      - logger
+    volumes:
+      - dataset:/app/app/data
+      - logs:/app/logs
+      - db:/app/db
+
+  token-shop:
+    build: ./token-shop
+    ports:
+      - "8001:8001"
+
+  rate-limiter:
+    build: ./rate-limiter
+    ports:
+      - "8002:8002"
+
+  cache:
+    build: ./cache
+    ports:
+      - "8003:8003"
+
+  logger:
+    build: ./logger
+    ports:
+      - "8004:8004"
+    volumes:
+      - logs:/logs
+
+volumes:
+  dataset:
+  logs:
+  db:
