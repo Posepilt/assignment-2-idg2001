@@ -1,4 +1,4 @@
-"""Token Shop - Handles token purchases with secret codes."""
+"""Token Shop. Handles token purchases with secret codes"""
 import hashlib
 import random
 import string
@@ -15,19 +15,19 @@ token_price = 2
 
 
 class BuyRequest(BaseModel):
-    """For buying tokens."""
+    """For buying tokens"""
     username: str
     password: str
     money: int
 
 
 class CodeRequest(BaseModel):
-    """For verifying a code."""
+    """For verifying a code"""
     code: str
 
 
 class PriceUpdate(BaseModel):
-    """For updating the token price."""
+    """For updating the token price"""
     price: int  # must be at least 1
 
     @field_validator("price")
@@ -41,7 +41,7 @@ class PriceUpdate(BaseModel):
 
 @app.post("/buy")
 def buy_tokens(payload: BuyRequest):
-    """Buy tokens with money. Returns a secret code."""
+    """Buy tokens with money. Returns a secret code"""
     # int division. 10 money at price of 2 gives 5 tokens
     tokens_to_give = payload.money // token_price
 
@@ -63,7 +63,7 @@ def buy_tokens(payload: BuyRequest):
 
 @app.post("/verify")
 def verify_code(payload: CodeRequest):
-    """Check if a secret code is valid and return how many tokens it is worth."""
+    """Check if a secret code is valid and return how many tokens it is worth"""
     # look up the secret code in the purchases above
     existing_purchase = purchases.get(payload.code)
 
@@ -85,13 +85,13 @@ def verify_code(payload: CodeRequest):
 
 @app.get("/price")
 def get_price():
-    """Return the current token price."""
+    """Return the current token price"""
     return {"price": token_price}
 
 
 @app.post("/price")
 def set_price(payload: PriceUpdate):
-    """Admin endpoint to update the token price."""
+    """Admin endpoint to update the token price"""
     global token_price  # update the shared variable, not just inside this function
     token_price = payload.price
     return {"price": token_price}

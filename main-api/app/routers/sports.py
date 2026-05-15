@@ -1,4 +1,4 @@
-"""Sport data endpoint. Supports filtering by country, year, season and medals."""
+"""Sport data endpoint. Supports filtering by country, year, season and medals"""
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.orm import Session
@@ -24,7 +24,7 @@ def get_sport(
     db: Session = Depends(get_db),
     user=Depends(consume_token),
 ):
-    """Get all results for a sport. Can be filtered by country, year, season and medals."""
+    """Get all results for a sport. Can be filtered by country, year, season and medals"""
     cache_key = f"{request.url.path}?{request.url.query}"
 
     cached_data = get_cached(cache_key)

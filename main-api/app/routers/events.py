@@ -1,4 +1,4 @@
-"""Event creation endpoint."""
+"""Event creation endpoint"""
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -17,7 +17,7 @@ def create_event(
     db: Session = Depends(get_db),
     user=Depends(consume_token),
 ):
-    """Add a new event/participation record to the database."""
+    """Add a new event/participation record to the database"""
     new_event = OlympicEvent(
         name=payload.name,
         sex=payload.sex,

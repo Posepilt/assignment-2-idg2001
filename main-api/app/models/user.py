@@ -1,14 +1,16 @@
-"""User database model."""
+"""User database model"""
 import uuid
 from sqlalchemy import Column, String, Integer
 from app.database import Base
 
 
 def generate_id():
+    """Return a random unique string ID using UUID4"""
     return str(uuid.uuid4())
 
 
 class User(Base):
+    """Database model for the users table. Stores login credentials and token balance"""
     __tablename__ = "users"
 
     id = Column(String, primary_key=True, default=generate_id)

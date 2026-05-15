@@ -1,4 +1,4 @@
-"""Country data endpoint."""
+"""Country data endpoint"""
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -19,7 +19,7 @@ def get_country(
     db: Session = Depends(get_db),
     user=Depends(consume_token),
 ):
-    """Get all Olympic results for a country, grouped by sport."""
+    """Get all Olympic results for a country, grouped by sport"""
     cache_key = f"{request.url.path}?{request.url.query}"
 
     cached_data = get_cached(cache_key)
