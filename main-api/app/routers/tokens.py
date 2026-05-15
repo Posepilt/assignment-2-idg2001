@@ -1,14 +1,30 @@
 """Token management endpoint"""
+import hashlib
 import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
-from app.schemas import TokenRedeem
+from app.schemas import TokenRedeem, TokenBuy
 
 router = APIRouter()
 
 TOKEN_SHOP_URL = "http://token-shop:8001"
+
+
+@router.post("/tokens/buy")
+def buy_tokens(payload: TokenBuy, db: Session = Depends(get_db)):
+    """Validate user credentials and forward the purchase to the token shop"""
+    user = db.query(User).filter(User.email == payload.email).first()
+    password_hash = hashlib.sha256(payload.password.encode()).hexdigest()
+    if not user or user.password_hash != password_hash:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    shop_response = httpx.post(
+        f"{TOKEN_SHOP_URL}/buy",
+        json={"username": payload.email, "money": payload.money},
+    )
+    return shop_response.json()
 
 
 @router.get("/tokens")

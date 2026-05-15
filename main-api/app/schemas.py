@@ -30,6 +30,13 @@ class TokenRedeem(BaseModel):
     code: str
 
 
+class TokenBuy(BaseModel):
+    """Holds the credentials and money amount needed to purchase tokens"""
+    email: str
+    password: str
+    money: int
+
+
 class OlympicEventCreate(BaseModel):
     """Data needed to create a new Olympic event entry. name, noc and sport are required"""
     name: str
