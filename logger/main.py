@@ -1,4 +1,4 @@
-"""Logger service, saves request data to daily CSV files."""
+"""Logger service, saves request data to daily CSV files"""
 import csv
 import os
 from datetime import datetime, timedelta
@@ -22,14 +22,14 @@ retention_days = 7
 
 
 class LogEntry(BaseModel):
-    """Data the main-api sends when a request is made."""
+    """Data the main-api sends when a request is made"""
     username: str
     endpoint: str
     tokens: int
 
 
 class RetentionUpdate(BaseModel):
-    """Schema for changing the retention period."""
+    """Schema for changing the retention period"""
     n: int
 
 
@@ -39,7 +39,7 @@ def get_log_path(date: datetime) -> str:
 
 
 def delete_old_files():
-    """Delete any CSV files older than retention_days days."""
+    """Delete any CSV files older than retention_days days"""
     cutoff = datetime.now() - timedelta(days=retention_days)
     for filename in os.listdir(LOG_DIR):
         if not filename.endswith(".csv"):
@@ -53,7 +53,7 @@ def delete_old_files():
 
 
 def flush_to_file():
-    """Write new entries from memory to today's CSV file."""
+    """Write new entries from memory to today's CSV file"""
     global flush_index
 
     new_entries = log_entries[flush_index:]
@@ -77,7 +77,7 @@ def flush_to_file():
 
 @app.post("/log")
 def add_log(payload: LogEntry):
-    """Log a request and save it to the CSV file."""
+    """Log a request and save it to the CSV file"""
     log_entry = {
         "time": datetime.now().isoformat(),
         "username": payload.username,
@@ -93,7 +93,7 @@ def add_log(payload: LogEntry):
 
 @app.get("/log")
 def get_log():
-    """Return all log entries stored in memory."""
+    """Return all log entries stored in memory"""
     return {
         "date": datetime.now().strftime("%Y-%m-%d"),
         "count": len(log_entries),
@@ -103,13 +103,13 @@ def get_log():
 
 @app.get("/retention")
 def get_retention():
-    """Return how many days of log files we keep."""
+    """Return how many days of log files we keep"""
     return {"n": retention_days}
 
 
 @app.post("/retention")
 def set_retention(payload: RetentionUpdate):
-    """Update how many days of log_entries to keep and delete files that are now too old."""
+    """Update how many days of log_entries to keep and delete files that are now too old"""
     global retention_days
     retention_days = payload.n
     delete_old_files()

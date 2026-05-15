@@ -1,4 +1,4 @@
-"""Loads the Kaggle CSV into the database."""
+"""Loads the Kaggle CSV into the database"""
 import os
 import pandas as pd
 from app.database import SessionLocal
@@ -6,7 +6,7 @@ from app.models.olympic_event import OlympicEvent
 
 
 def seed_database():
-    """Seed the olympic_events table from the CSV file."""
+    """Seed the olympic_events table from the CSV file"""
     db = SessionLocal()
     try:
         count = db.query(OlympicEvent).count()
@@ -57,7 +57,7 @@ def seed_database():
 
 
 def clean_float(val):
-    """Convert a value to float, returning None for NaN or missing."""
+    """Convert a value to float, returning None for NaN or missing"""
     try:
         float_value = float(val)
         if pd.isna(float_value):
@@ -68,7 +68,7 @@ def clean_float(val):
 
 
 def clean_int(val):
-    """Convert a value to int, returning None for NaN or missing."""
+    """Convert a value to int, returning None for NaN or missing"""
     float_value = clean_float(val)
     if float_value is not None:
         return int(float_value)
@@ -76,7 +76,7 @@ def clean_int(val):
 
 
 def clean_str(val):
-    """Convert a value to string, returning None for NaN or missing."""
+    """Convert a value to string, returning None for NaN or missing"""
     if val is None or (isinstance(val, float) and pd.isna(val)):
         return None
     cleaned_string = str(val).strip()

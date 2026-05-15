@@ -1,4 +1,4 @@
-"""Helper for returning responses in different formats (JSON, XML, CSV)."""
+"""Helper for returning responses in different formats (JSON, XML, CSV)"""
 
 import csv
 import io
@@ -7,7 +7,7 @@ from dicttoxml import dicttoxml
 
 
 def format_response(data, fmt="json"):
-    """Return data in the requested format."""
+    """Return data in the requested format"""
     fmt = fmt.lower()
 
     if fmt == "xml":

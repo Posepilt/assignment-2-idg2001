@@ -1,4 +1,4 @@
-"""Cache service - stores API responses so we don't have to hit the database every time."""
+"""Cache service. Stores API responses so we don't have to hit the database every time"""
 from datetime import datetime, timedelta
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -15,14 +15,14 @@ misses = 0
 
 
 class CacheStore(BaseModel):
-    """What the main-api sends us when it wants to store a new response."""
+    """What the main-api sends us when it wants to store a new response"""
     endpoint: str  # the request url. used as a unique key to look up later
     data: Any  # the response we want to save so we can return it next time the same url is requested
 
 
 @app.get("/cache")
 def get_cache(endpoint: str):
-    """Check whether we have a cached response for the given endpoint."""
+    """Check whether we have a cached response for the given endpoint"""
     global hits, misses
 
     now = datetime.now()
@@ -47,7 +47,7 @@ def get_cache(endpoint: str):
 
 @app.post("/cache")
 def set_cache(payload: CacheStore):
-    """Store a response so the next identical request can be served from here instead of the database."""
+    """Store a response so the next identical request can be served from here instead of the database"""
     cache[payload.endpoint] = {
         "data": payload.data,  # the response to save
         "timestamp": datetime.now(),  # when it was saved. used for checking if expired
@@ -57,5 +57,5 @@ def set_cache(payload: CacheStore):
 
 @app.get("/log")
 def get_log():
-    """Return the total number of cache hits and misses since the service started."""
+    """Return the total number of cache hits and misses since the service started"""
     return {"hits": hits, "misses": misses}
