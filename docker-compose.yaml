@@ -3,6 +3,8 @@ services:
     build: ./main-api
     ports:
       - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:////app/db/olympic.db
     depends_on:
       - token-shop
       - rate-limiter
