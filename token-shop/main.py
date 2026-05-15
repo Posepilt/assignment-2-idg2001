@@ -17,7 +17,6 @@ token_price = 2
 class BuyRequest(BaseModel):
     """For buying tokens"""
     username: str
-    password: str
     money: int
 
 
