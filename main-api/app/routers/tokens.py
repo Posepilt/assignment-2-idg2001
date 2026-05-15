@@ -1,4 +1,4 @@
-"""Token management endpoint."""
+"""Token management endpoint"""
 import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -13,7 +13,7 @@ TOKEN_SHOP_URL = "http://token-shop:8001"
 
 @router.get("/tokens")
 def get_token_price():
-    """Return the current token price from the Token Shop."""
+    """Return the current token price from the Token Shop"""
     price_response = httpx.get(f"{TOKEN_SHOP_URL}/price")
     return price_response.json()
 
@@ -22,7 +22,7 @@ def get_token_price():
 def redeem_tokens(
     payload: TokenRedeem, db: Session = Depends(get_db)
 ):
-    """Redeem a secret code from the Token Shop for tokens."""
+    """Redeem a secret code from the Token Shop for tokens"""
     user = db.query(User).filter(User.id == payload.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

@@ -1,4 +1,4 @@
-"""User management endpoints."""
+"""User management endpoints"""
 import hashlib
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
@@ -10,7 +10,7 @@ from app.schemas import UserCreate, UserUpdate, UserResponse
 
 
 def hash_password(password: str) -> str:
-    """Hash a password using SHA-256."""
+    """Hash a password using SHA-256"""
     return hashlib.sha256(password.encode()).hexdigest()
 
 
@@ -19,7 +19,7 @@ router = APIRouter()
 
 @router.post("/user", response_model=UserResponse, status_code=201)
 def create_user(payload: UserCreate, db: Session = Depends(get_db)):
-    """Register a new user. New users start with 10 tokens."""
+    """Register a new user. New users start with 10 tokens"""
     existing_user = db.query(User).filter(User.email == payload.email).first()  # check before insert
     if existing_user:
         raise HTTPException(status_code=409, detail="Email already registered")
@@ -36,13 +36,13 @@ def create_user(payload: UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/user", response_model=List[UserResponse])
 def list_users(db: Session = Depends(get_db)):
-    """Get a list of all users."""
+    """Get a list of all users"""
     return db.query(User).all()
 
 
 @router.get("/user/{user_id}", response_model=UserResponse)
 def get_user(user_id: str, db: Session = Depends(get_db)):
-    """Return a single user by ID."""
+    """Return a single user by ID"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -55,7 +55,7 @@ def update_user(
     payload: UserUpdate,
     db: Session = Depends(get_db),
 ):
-    """Update a user's email or password."""
+    """Update a user's email or password"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -76,7 +76,7 @@ def update_user(
 
 @router.delete("/user/{user_id}", status_code=204)
 def delete_user(user_id: str, db: Session = Depends(get_db)):
-    """Delete a user by ID."""
+    """Delete a user by ID"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

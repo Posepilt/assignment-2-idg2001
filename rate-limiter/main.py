@@ -1,4 +1,4 @@
-"""Rate Limiter - Tracks request frequency per user."""
+"""Rate Limiter. Tracks request frequency per user"""
 from datetime import datetime, timedelta
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -10,13 +10,13 @@ user_requests = {}
 
 
 class RequestLog(BaseModel):
-    """For logging a request."""
+    """For logging a request"""
     username: str
 
 
 @app.post("/{user_id}")
 def add_request(user_id: str, payload: RequestLog):
-    """Log a new request for a user."""
+    """Log a new request for a user"""
     current_time = datetime.now()  # exact time of the request
     if user_id not in user_requests:
         user_requests[user_id] = []  # if first time user, we create an empty array
@@ -35,7 +35,7 @@ def add_request(user_id: str, payload: RequestLog):
 
 @app.get("/{user_id}")
 def get_requests(user_id: str):
-    """Return how many requests this user has made in the last 10 seconds, and how long to delay them."""
+    """Return how many requests this user has made in the last 10 seconds, and how long to delay them"""
     current_time = datetime.now()
 
     if user_id not in user_requests:

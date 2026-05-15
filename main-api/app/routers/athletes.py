@@ -1,4 +1,4 @@
-"""Athlete data endpoint."""
+"""Athlete data endpoint"""
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -19,7 +19,7 @@ def get_athlete(
     db: Session = Depends(get_db),
     user=Depends(consume_token),
 ):
-    """Search for an athlete by name and return their Olympic results."""
+    """Search for an athlete by name and return their Olympic results"""
     cache_key = f"{request.url.path}?{request.url.query}"
 
     cached_data = get_cached(cache_key)

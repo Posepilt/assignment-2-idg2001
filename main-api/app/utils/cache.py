@@ -1,4 +1,4 @@
-"""Helper functions for talking to the cache service."""
+"""Helper functions for talking to the cache service"""
 import httpx
 
 
@@ -6,7 +6,7 @@ CACHE_URL = "http://cache:8003"  # the address of the cache container inside Doc
 
 
 def get_cached(endpoint: str):
-    """Check if the cache has a stored response for this endpoint. Returns None if not found."""
+    """Check if the cache has a stored response for this endpoint. Returns None if not found"""
     try:
         cache_response = httpx.get(f"{CACHE_URL}/cache", params={"endpoint": endpoint})
         cache_result = cache_response.json()
@@ -18,7 +18,7 @@ def get_cached(endpoint: str):
 
 
 def store_cache(endpoint: str, data: dict):
-    """Save a response to the cache so the same request can be served faster next time."""
+    """Save a response to the cache so the same request can be served faster next time"""
     try:
         httpx.post(f"{CACHE_URL}/cache", json={"endpoint": endpoint, "data": data})
     except httpx.ConnectError:
